@@ -438,6 +438,7 @@ h2,h3,.next-title,.empty b,.dlg h2,.group h2,.panel-head h3{font-family:var(--f-
 .cn-dots{display:flex;gap:6px;align-items:center;font-size:13px}
 .cn-dots i{width:12px;height:12px;border-radius:50%;background:#5A594E;display:inline-block}
 .badge{margin-left:6px;background:var(--accent);color:#fff;padding:0 6px;font-size:11px;border-radius:9px}
+#sSources.drop{outline:2px dashed var(--accent);outline-offset:3px;background:var(--surface-2)}
 .tt-cal{padding:0;overflow:hidden}
 .tt-nav button.btn{width:auto;height:auto;border-radius:3px;padding:4px 12px}
 .cal-head{padding:14px 16px 0}
@@ -850,11 +851,11 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
     <div class="gnbox" id="sSources">
       <span class="label">Lecture slides &amp; notes from Moodle</span>
       <div class="actions">
-        <button type="button" class="btn small primary" id="sGrant" hidden>Give Dead-Lines access to Moodle</button>
+        <button type="button" class="btn small" id="sGrant" hidden>Moodle key</button>
         <button type="button" class="btn small" id="sSync">Check Moodle now</button>
-        <label class="btn small ghost" for="sFile">Add a file myself</label><input type="file" id="sFile" accept="application/pdf,.pdf,.pptx,.docx,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
+        <label class="btn small primary" for="sFile">Add lecture files</label><input type="file" id="sFile" accept="application/pdf,.pdf,.pptx,.docx,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
       </div>
-      <p class="note" id="sSrcNote">Once Moodle access is given, every lecture slide and note on all your modules (PDF, PowerPoint, Word and Moodle pages) is fetched automatically, then turned into key points, key terms and flashcards. New ones arrive by themselves while Dead-Lines is open. They're kept on this device.</p>
+      <p class="note" id="sSrcNote">Download lecture slides and notes from Moodle (PDF, PowerPoint or Word), then pick them all at once here or drag them onto this box. Dead-Lines files each one under the right module and writes key points, key terms and flashcards. Kept on this device.</p>
       <p class="note" id="sStatus" hidden></p>
       <p class="ok-msg" id="sMsg" hidden></p>
     </div>
@@ -893,8 +894,8 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
       </div>
       <p class="note" style="margin-top:6px">Or click <b>Export</b> instead and drop the downloaded file below. <a href="https://moodle.bath.ac.uk/calendar/export.php" target="_blank" rel="noopener" style="color:var(--accent)">Open Moodle export</a></p>
       <div class="autoprep" style="margin-top:14px">
-        <span class="label">Give Dead-Lines access to your Moodle</span>
-        <p class="note" style="margin:4px 0 6px">One key does everything: ticks off work you've submitted, and fetches every lecture slide and note from all your modules so the Study room can summarise them and make flashcards.</p>
+        <span class="label">Moodle key (not available at Bath right now)</span>
+        <p class="note" style="margin:4px 0 6px">Bath has switched off Moodle keys for students, so Moodle will say any key "doesn't exist". Your deadlines still sync through the calendar link above. For lecture notes, download them from Moodle and drop them into Study, which sorts them into modules by itself. This box is only here in case Bath turns keys back on.</p>
         <ol class="steps">
           <li>In Moodle, open your profile menu, then <b>Preferences</b>, then <a href="https://moodle.bath.ac.uk/user/managetoken.php" target="_blank" rel="noopener" style="color:var(--accent)"><b>Security keys</b></a>.</li>
           <li>Copy the key next to <b>Moodle mobile web service</b>. If there isn't one, sign in to the Moodle app on your phone once, then check again.</li>
@@ -3237,7 +3238,7 @@ async function renderStudy(){
   dS.querySelectorAll("[data-stab]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.stab === ui.stab)));
   $("#sSources").hidden = ui.stab !== "sum";
   const hasKey = !!getMToken(); $("#sGrant").hidden = hasKey; $("#sSync").hidden = !hasKey; showSlideStatus();
-  if (!hasKey && ui.stab === "sum") sMsg("Dead-Lines doesn't have your Moodle key yet. A synced Moodle calendar only shares deadlines, not files. Tap Give Dead-Lines access to Moodle.", true);
+
   const docs = await studyDocs();
   if (ui.stab === "sum") renderSummaries(docs);
   else if (ui.stab === "cards") renderCards(docs);
@@ -3291,8 +3292,13 @@ async function addSlideDoc({buf, name, code, moodleUrl, added, kind}){
   await IDB.put({id:"sl-" + uid() + uid(), kind:"slides", m:code || "", name:name.replace(/\.(pdf|pptx|docx|html?)$/i, "").slice(0, 120), added: added || Date.now(), moodleUrl: moodleUrl || "", text, ...a});
   return "ok";
 }
-$("#sFile").addEventListener("change", async e => {
-  const files = [...e.target.files]; e.target.value = ""; if (!files.length) return;
+const srcBox = $("#sSources");
+["dragenter","dragover"].forEach(t => srcBox.addEventListener(t, e => { e.preventDefault(); srcBox.classList.add("drop"); }));
+["dragleave","drop"].forEach(t => srcBox.addEventListener(t, () => srcBox.classList.remove("drop")));
+srcBox.addEventListener("drop", e => { e.preventDefault(); addStudyFiles([...(e.dataTransfer.files || [])]); });
+$("#sFile").addEventListener("change", e => { const files = [...e.target.files]; e.target.value = ""; addStudyFiles(files); });
+async function addStudyFiles(files){
+  if (!files.length) return;
   let ok = 0, notext = 0, bad = 0;
   for (const f of files){
     sMsg(`Reading ${f.name}…`);
@@ -3303,9 +3309,9 @@ $("#sFile").addEventListener("change", async e => {
     const r = await addSlideDoc({buf, name:f.name, code, kind});
     if (r === "ok") ok++; else if (r === "notext") notext++; else bad++;
   }
-  sMsg(`Summarised ${ok} set${ok === 1 ? "" : "s"} of slides.` + (notext ? ` ${notext} had no readable text (handwritten or scanned PDFs can't be read).` : "") + (bad ? ` ${bad} couldn't be opened.` : ""), !ok);
+  sMsg(`Summarised ${ok} file${ok === 1 ? "" : "s"}.` + (notext ? ` ${notext} had no readable text (handwritten or scanned PDFs can't be read).` : "") + (bad ? ` ${bad} couldn't be opened.` : ""), !ok);
   renderStudy();
-});
+}
 async function moodleFile(url){
   try {
     const d = await fetch(url + (url.includes("?") ? "&" : "?") + "token=" + encodeURIComponent(getMToken()));
