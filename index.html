@@ -1341,7 +1341,7 @@ function renderConn(){
     if (k === "moodle" && getMToken() && !syncing[k]){
       if (!mTick) t += " · auto-tick on";
       else if (!mTick.err) t += ` · auto-tick on${mTick.n ? " (" + mTick.n + " ticked)" : ""}`;
-      else t += mTick.err === "unreachable" ? " · auto-tick runs on your hosted site" : " · Moodle key not accepted";
+      else t += mTick.err === "unreachable" ? " · auto-tick runs on your hosted site" : /^(noconnector|notallowed)$/.test(mTick.err) ? " · Moodle connector not running" : mTick.err === "moodledown" ? " · Moodle not answering" : " · Moodle key not accepted";
     }
     $(sel).textContent = t;
     $(asel).innerHTML = linked
@@ -1701,12 +1701,35 @@ const MTOKEN_KEY = LS_KEY + ".moodleKey";
 let mTick = null;
 function getMToken(){ try { return localStorage.getItem(MTOKEN_KEY) || ""; } catch(e){ return ""; } }
 function setMToken(v){ try { if (v) localStorage.setItem(MTOKEN_KEY, v); else localStorage.removeItem(MTOKEN_KEY); } catch(e){} if (v && typeof syncSlides === "function") setTimeout(() => syncSlides({quiet:true, force:true}), 1500); }
-async function moodleWS(fn, params){
+// Talks to Bath's Moodle: straight from the browser when Moodle allows it, otherwise through the site's Netlify connector.
+const MOODLE_REST = "https://moodle.bath.ac.uk/webservice/rest/server.php";
+let moodleRoute = "";   // "direct" or "proxy" once one has worked
+async function moodleDirect(fn, params){
+  const form = new URLSearchParams({wstoken: getMToken(), wsfunction: fn, moodlewsrestformat: "json"});
+  Object.entries(params || {}).forEach(([k, v]) => form.set(k, String(v)));
+  const r = await fetch(MOODLE_REST, {method: "POST", body: form});
+  if (!r.ok) throw new Error("direct");
+  return r.json();
+}
+async function moodleProxy(fn, params){
   let r;
   try { r = await fetch("/.netlify/functions/moodle", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({token:getMToken(), fn, params})}); }
-  catch(e){ throw new Error("unreachable"); }
-  if (r.status === 404 || !r.ok && r.status !== 400) throw new Error("unreachable");
-  let j; try { j = await r.json(); } catch(e){ throw new Error("unreachable"); }
+  catch(e){ throw new Error("noconnector"); }
+  if (r.status === 404) throw new Error("noconnector");
+  if (r.status === 502 || r.status === 504) throw new Error("moodledown");
+  if (!r.ok && r.status !== 400) throw new Error("noconnector");
+  let j; try { j = await r.json(); } catch(e){ throw new Error("noconnector"); }
+  return j;
+}
+async function moodleWS(fn, params){
+  if (window.claude) throw new Error("unreachable");
+  let j = null, err = null;
+  const order = moodleRoute === "proxy" ? ["proxy", "direct"] : ["direct", "proxy"];
+  for (const how of order){
+    try { j = how === "direct" ? await moodleDirect(fn, params) : await moodleProxy(fn, params); moodleRoute = how; err = null; break; }
+    catch(e){ if (how === "proxy" || !err) err = e; }
+  }
+  if (err) throw new Error(err.message === "direct" || err.message === "Failed to fetch" || err instanceof TypeError ? "noconnector" : err.message);
   if (j && j.exception) throw new Error(j.errorcode || "moodle");
   return j;
 }
@@ -1734,9 +1757,10 @@ $("#mdTokenOn").addEventListener("click", async () => {
   const b = $("#mdTokenOn"); b.disabled = true; b.textContent = "Checking…";
   mTick = null;
   await syncFeed("moodle");
-  b.disabled = false; b.textContent = "Turn on";
+  b.disabled = false; b.textContent = "Give access";
   if (mTick && !mTick.err){ syncI(); const el = $("#okI"); el.textContent = `Moodle connected. ${mTick.n} submitted item${mTick.n === 1 ? "" : "s"} ticked off, and your lecture slides and notes are downloading into the Study room now.`; el.hidden = false; }
   else if (mTick && mTick.err === "unreachable"){ syncI(); showErr("Key saved on this device. Moodle access only works on your hosted Dead-Lines site, so it will start there."); }
+  else if (mTick && /^(noconnector|moodledown|notallowed)$/.test(mTick.err)){ syncI(); showErr("Key saved. " + (MOODLE_FIX[mTick.err] || "")); }
   else { setMToken(""); mTick = null; syncI(); renderConn(); showErr("Moodle didn't accept that key. Copy the Moodle mobile web service key again."); }
 });
 $("#mdTokenOff").addEventListener("click", () => {
@@ -3272,7 +3296,16 @@ $("#sFile").addEventListener("change", async e => {
   renderStudy();
 });
 async function moodleFile(url){
-  const r = await fetch("/.netlify/functions/moodle", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({token:getMToken(), fn:"__file", url})});
+  try {
+    const d = await fetch(url + (url.includes("?") ? "&" : "?") + "token=" + encodeURIComponent(getMToken()));
+    const dct = d.headers.get("content-type") || "";
+    if (d.ok && !/json/.test(dct)) return d.arrayBuffer();
+    if (d.ok){ const j = await d.json().catch(() => ({})); if (j.errorcode) throw new Error(j.errorcode); }
+  } catch(e){ if (e && e.message && !/fetch|network|load/i.test(e.message) && !(e instanceof TypeError)) throw e; }
+  let r;
+  try { r = await fetch("/.netlify/functions/moodle", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({token:getMToken(), fn:"__file", url})}); }
+  catch(e){ throw new Error("noconnector"); }
+  if (r.status === 404) throw new Error("noconnector");
   if (r.status === 400) throw new Error("notallowed");
   if (!r.ok) throw new Error("file");
   const ct = r.headers.get("content-type") || "";
@@ -3295,7 +3328,13 @@ function showSlideStatus(){
   const when = i.at ? new Date(i.at).toLocaleString("en-GB", {weekday:"short", hour:"2-digit", minute:"2-digit"}) : "";
   el.hidden = false; el.textContent = (when ? "Last checked " + when + ": " : "") + i.last;
 }
+const MOODLE_FIX = {
+  noconnector: "Dead-Lines couldn't reach Bath's Moodle. Check the internet connection (some uni or work Wi-Fi blocks it), then try again.",
+  moodledown: "Bath's Moodle didn't answer. It may be down for a moment, so try again later.",
+  notallowed: "The site's Moodle connector is an old version. Ask George to upload the whole new dead-lines-site.zip, including the netlify folder."
+};
 const SLIDE_ERRORS = {
+  noconnector: MOODLE_FIX.noconnector, moodledown: MOODLE_FIX.moodledown,
   notallowed: "your live site still has the old Moodle connector. Upload the whole new dead-lines-site.zip (including the netlify/functions folder), not just index.html.",
   invalidtoken: "Moodle didn't accept the key. Copy it again from Moodle, Preferences, Security keys, and paste it in Bath import.",
   accessexception: "Bath's Moodle blocked this request for this key. Tell George what this message says.",
