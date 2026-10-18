@@ -1730,7 +1730,7 @@ async function moodleWS(fn, params){
     catch(e){ if (how === "proxy" || !err) err = e; }
   }
   if (err) throw new Error(err.message === "direct" || err.message === "Failed to fetch" || err instanceof TypeError ? "noconnector" : err.message);
-  if (j && j.exception) throw new Error(j.errorcode || "moodle");
+  if (j && (j.exception || j.errorcode)){ const e = new Error(j.errorcode || "moodle"); e.moodleMsg = j.message || j.error || ""; throw e; }
   return j;
 }
 async function checkMoodleDone(){
@@ -1750,18 +1750,29 @@ async function checkMoodleDone(){
   return ticked;
 }
 $("#mdTokenOn").addEventListener("click", async () => {
-  const v = $("#mdToken").value.trim();
+  const v = $("#mdToken").value.replace(/\s+/g, "");
   $("#errI").hidden = true; $("#okI").hidden = true;
   if (!/^[a-f0-9]{32}$/i.test(v)){ showErr("That doesn't look like a Moodle key. It's 32 letters and numbers."); return; }
-  setMToken(v); $("#mdToken").value = "";
   const b = $("#mdTokenOn"); b.disabled = true; b.textContent = "Checking…";
+  // 1. check the key itself with the simplest Moodle call
+  const prev = getMToken(); setMToken(v);
+  let who = null, why = null;
+  try { who = await moodleWS("core_webservice_get_site_info", {}); } catch(e){ why = e; }
+  if (!who || !who.userid){
+    setMToken(prev); b.disabled = false; b.textContent = "Give access";
+    const code = (why && why.message) || "nouser";
+    const msg = MOODLE_KEY_ERRORS[code] || MOODLE_FIX[code] || "Moodle replied: \"" + ((why && why.moodleMsg) || code) + "\". Send this message to George.";
+    showErr(msg + (why && why.moodleMsg && MOODLE_KEY_ERRORS[code] ? " (Moodle said: " + why.moodleMsg + ")" : ""));
+    return;
+  }
+  $("#mdToken").value = "";
   mTick = null;
   await syncFeed("moodle");
   b.disabled = false; b.textContent = "Give access";
   if (mTick && !mTick.err){ syncI(); const el = $("#okI"); el.textContent = `Moodle connected. ${mTick.n} submitted item${mTick.n === 1 ? "" : "s"} ticked off, and your lecture slides and notes are downloading into the Study room now.`; el.hidden = false; }
   else if (mTick && mTick.err === "unreachable"){ syncI(); showErr("Key saved on this device. Moodle access only works on your hosted Dead-Lines site, so it will start there."); }
   else if (mTick && /^(noconnector|moodledown|notallowed)$/.test(mTick.err)){ syncI(); showErr("Key saved. " + (MOODLE_FIX[mTick.err] || "")); }
-  else { setMToken(""); mTick = null; syncI(); renderConn(); showErr("Moodle didn't accept that key. Copy the Moodle mobile web service key again."); }
+  else { syncI(); renderConn(); const el = $("#okI"); el.textContent = `Moodle connected as ${who.fullname || "you"}. Your lecture notes are downloading into the Study room now. (Auto-tick couldn't read your Moodle deadlines: ${mTick ? mTick.err : "unknown"}.)`; el.hidden = false; }
 });
 $("#mdTokenOff").addEventListener("click", () => {
   setMToken(""); mTick = null; renderConn(); syncI();
@@ -3328,6 +3339,15 @@ function showSlideStatus(){
   const when = i.at ? new Date(i.at).toLocaleString("en-GB", {weekday:"short", hour:"2-digit", minute:"2-digit"}) : "";
   el.hidden = false; el.textContent = (when ? "Last checked " + when + ": " : "") + i.last;
 }
+const MOODLE_KEY_ERRORS = {
+  invalidtoken: "Moodle says this key doesn't exist. Check you copied the key on the row called \"Moodle mobile web service\" (not another row), the whole thing, and that it wasn't reset afterwards. If the row isn't there, sign in to the Moodle app on your phone once, then look again.",
+  accessexception: "Moodle recognised the key but won't let it be used this way. Make sure it's the \"Moodle mobile web service\" key, not a different service.",
+  webservice_access_exception: "Moodle recognised the key but won't let it be used this way. Make sure it's the \"Moodle mobile web service\" key, not a different service.",
+  invalidtokenexpired: "That key has expired. Reset it on the Security keys page (or sign in to the Moodle app again) and paste the new one.",
+  servicenotavailable: "Bath has switched off this kind of key for students. Tell George.",
+  enablewsdescription: "Bath has switched off this kind of key for students. Tell George.",
+  nouser: "Moodle answered but didn't say who the key belongs to. Copy the key again."
+};
 const MOODLE_FIX = {
   noconnector: "Dead-Lines couldn't reach Bath's Moodle. Check the internet connection (some uni or work Wi-Fi blocks it), then try again.",
   moodledown: "Bath's Moodle didn't answer. It may be down for a moment, so try again later.",
