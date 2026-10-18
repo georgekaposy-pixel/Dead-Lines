@@ -89,6 +89,10 @@ header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 .btn.small{padding:4px 11px;font-size:13px;box-shadow:2px 2px 0 var(--shadow)}
 .btn.ghost{box-shadow:none;border-style:dashed}
 .save{font-size:12px;color:var(--ink-2);font-family:var(--f-mono)}
+button.acct{background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;text-align:left}
+#dlgL{width:min(440px, calc(100vw - 24px))}
+#dlgL form{display:grid;gap:10px;margin-top:10px}
+#dlgL input{width:100%}
 
 /* banner */
 .banner{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 18px;background-color:var(--ink);color:var(--bg)}
@@ -135,7 +139,7 @@ header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 .tabs{display:flex;gap:2px;flex-wrap:wrap}
 .tabs button{border:1.5px solid var(--line);background:var(--surface);padding:4px 12px;font-family:var(--f-mono);font-weight:700;font-size:13px;color:var(--ink);border-radius:3px}
 .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);transform:rotate(-2deg)}
-select,input[type=text],input[type=number],input[type=date],input[type=time],input[type=url],textarea{background:var(--surface);border:1.5px solid var(--line);border-radius:3px;padding:7px 10px;min-width:0;font-family:var(--f-mono)}
+select,input[type=text],input[type=number],input[type=date],input[type=time],input[type=url],input[type=password],textarea{background:var(--surface);border:1.5px solid var(--line);border-radius:3px;padding:7px 10px;min-width:0;font-family:var(--f-mono)}
 textarea{resize:vertical;min-height:70px}
 
 .group{display:grid;gap:12px;margin-bottom:28px}
@@ -274,7 +278,7 @@ button.src{background:none;color:var(--accent);cursor:pointer;font-family:var(--
 /* readability */
 :root{--f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace}
 body{font-size:16px;line-height:1.55}
-.btn,.tabs button,select,input[type=text],input[type=number],input[type=date],input[type=time],input[type=url],textarea,.sub,.note,.meta,.save,.empty,.sub-date,.field label,.field .hint,.err,.ok-msg,.drop,.tt-ev span,.need,.classes,.pill,.src,.when,.label,.week-head b,.tt-day h4,.date .m,.date .w,.bubble,.steps{font-family:var(--f-body)}
+.btn,.tabs button,select,input[type=text],input[type=number],input[type=date],input[type=time],input[type=url],input[type=password],textarea,.sub,.note,.meta,.save,.empty,.sub-date,.field label,.field .hint,.err,.ok-msg,.drop,.tt-ev span,.need,.classes,.pill,.src,.when,.label,.week-head b,.tt-day h4,.date .m,.date .w,.bubble,.steps{font-family:var(--f-body)}
 .btn,.tabs button{text-transform:none;letter-spacing:0;font-weight:700}
 .meta{font-size:14px}
 .note,.field .hint{font-size:13px}
@@ -539,7 +543,7 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
       </div>
     </div>
     <div class="actions">
-      <span class="save" id="saveState">Saved in this browser</span>
+      <button type="button" class="save acct" id="saveState">Saved in this browser</button>
       <button class="btn sun" id="btnImport" type="button">Bath import</button>
       <button class="btn spot" id="hdrSpotify" type="button" aria-controls="dock" aria-expanded="false"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="vertical-align:-3px;margin-right:4px"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></svg>Music</button>
       <button class="btn" id="btnPlay" type="button">Play</button>
@@ -840,6 +844,35 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
   </div>
 </dialog>
 
+<dialog id="dlgL" aria-labelledby="lTitle">
+  <div class="dlg">
+    <div class="panel-head"><h2 id="lTitle">Your Dead-Lines account</h2><button type="button" class="btn small" id="btnCloseL">Close</button></div>
+    <div id="lOut">
+      <p class="note" id="lIntro">Log in to save everything (deadlines, notes, grades, lists, study notes and GoodNotes PDFs) to your account. It's then the same on your phone and laptop, and nothing is lost if your browser is cleared.</p>
+      <div class="itabs" role="group" aria-label="Log in or create account" style="margin-top:10px">
+        <button type="button" class="btn small" data-lmode="login" aria-pressed="true">Log in</button>
+        <button type="button" class="btn small" data-lmode="signup" aria-pressed="false">Create account</button>
+      </div>
+      <form id="lForm" autocomplete="on" novalidate>
+        <div class="field"><label for="lUser">Username</label><input type="text" id="lUser" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. hailey"></div>
+        <div class="field"><label for="lPass">Password</label><input type="password" id="lPass" autocomplete="current-password" placeholder="At least 8 characters"></div>
+        <div class="field" id="lPass2Row" hidden><label for="lPass2">Password again</label><input type="password" id="lPass2" autocomplete="new-password"></div>
+        <p class="note" id="lSignNote" hidden>Write your password down somewhere safe: there's no "forgot password" email. Whatever is on this device now becomes the start of your account.</p>
+        <p class="note">You'll stay logged in on this device until you log out.</p>
+        <button type="submit" class="btn primary" id="lGo">Log in</button>
+      </form>
+      <p class="err" id="lErr" hidden></p>
+      <button type="button" class="btn small ghost" id="lSkip" style="margin-top:10px">Remind me tomorrow</button>
+    </div>
+    <div id="lIn" hidden>
+      <p>Logged in as <b id="lName"></b>.</p>
+      <p class="note" id="lSync"></p>
+      <div class="actions" style="margin-top:10px"><button type="button" class="btn small" id="lSyncNow">Sync now</button><button type="button" class="btn small danger" id="lLogout">Log out</button></div>
+      <p class="note" style="margin-top:10px">Logging out leaves a copy on this device. Log in on any other phone or laptop to get the same Dead-Lines.</p>
+    </div>
+  </div>
+</dialog>
+
 <dialog id="dlgS" class="wide" aria-labelledby="sTitle">
   <div class="dlg">
     <div class="panel-head"><h2 id="sTitle">Study room</h2><button type="button" class="btn small" id="btnCloseS">Close</button></div>
@@ -1044,7 +1077,7 @@ try { const u = JSON.parse(localStorage.getItem(LS_KEY+".ui")||"{}"); if (u.tab)
 let store = "local", docRef = null, saveTimer = null, saving = false, dirty = false;
 function setSave(t){ $("#saveState").textContent = t; }
 function writeLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
-function scheduleSave(){ writeLocal(); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 600); if (store==="db") setSave("Saving…"); }
+function scheduleSave(){ writeLocal(); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 600); if (store==="db") setSave("Saving…"); cloudDirty(); }
 async function flush(){
   saveTimer = null;
   if (store !== "db") return;
@@ -2139,6 +2172,10 @@ const IDB = (() => {
   }
   return { put: rec => tx("readwrite", st => st.put(rec)), get: id => tx("readonly", st => st.get(id)), del: id => tx("readwrite", st => st.delete(id)), byModule: m => tx("readonly", st => st.index("m").getAll(m)), all: () => tx("readonly", st => st.getAll()) };
 })();
+// Every change to saved files also goes to the account (when logged in).
+const IDBraw = {put: IDB.put, del: IDB.del, get: IDB.get, all: IDB.all};
+IDB.put = async rec => { rec.u = Date.now(); delete rec.cs; const r = await IDBraw.put(rec); fileQueue(rec.id); return r; };
+IDB.del = async id => { const r = await IDBraw.del(id); fileQueue(id); return r; };
 let gnUrls = [];
 function fmtSize(b){ return b > 1048576 ? (b/1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b/1024)) + " KB"; }
 async function renderGN(code){
@@ -3575,6 +3612,230 @@ document.addEventListener("keydown", e => {
 });
 
 window.__dl = {analyse, ui};
+/* ---------- accounts: log in and save everything online (hosted site only) ---------- */
+var AUTH_KEY = LS_KEY + ".auth", CLOUD_KEY = LS_KEY + ".cloud", SKIP_KEY = LS_KEY + ".loginSnooze";   // "Not now" only hides the account prompt for a day
+var pendingRender = false, cloudTimer = null, cloudBusy = false, cloudAgain = false, cloudReady = false, fileQ = new Set(), fileTimer = null, lastPull = 0;
+function auth(){ try { return JSON.parse(localStorage.getItem(AUTH_KEY) || "null"); } catch(e){ return null; } }
+function cloudMeta(){ try { return JSON.parse(localStorage.getItem(CLOUD_KEY) || "{}"); } catch(e){ return {}; } }
+function setCloudMeta(m){ try { localStorage.setItem(CLOUD_KEY, JSON.stringify(Object.assign(cloudMeta(), m))); } catch(e){} }
+function cloudOn(){ return !window.claude && !!auth(); }
+async function api(path, opts){
+  opts = opts || {}; const a = auth();
+  const r = await fetch("/.netlify/functions/" + path, Object.assign({credentials: "same-origin"}, opts, {headers: Object.assign({}, opts.headers || {}, a && a.token ? {Authorization: "Bearer " + a.token} : {})}));
+  if (r.status === 401 && a) cloudCheckSession();
+  return r;
+}
+// A 401 can be a blip: only log out once the server confirms the session is really gone.
+var checkingSession = false;
+async function cloudCheckSession(){
+  if (checkingSession) return; checkingSession = true;
+  try {
+    const r = await fetch("/.netlify/functions/account", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "me"})});
+    if (r.status === 401) cloudLoggedOut();
+    else if (r.ok){ const j = await r.json(); try { localStorage.setItem(AUTH_KEY, JSON.stringify({token: "", name: j.name})); } catch(e){} }
+  } catch(e){}
+  checkingSession = false;
+}
+// If this browser lost its saved login (cleared storage, Safari tidy-up), get it back from the login cookie.
+async function cloudRestore(){
+  try {
+    const r = await fetch("/.netlify/functions/account", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "me"})});
+    if (!r.ok) return false;
+    const j = await r.json(); if (!j.name) return false;
+    localStorage.setItem(AUTH_KEY, JSON.stringify({token: "", name: j.name}));
+    return true;
+  } catch(e){ return false; }
+}
+function cloudLoggedOut(){
+  try { localStorage.removeItem(AUTH_KEY); } catch(e){}
+  setSave("Logged out. Tap to log in"); renderAcct();
+}
+function cloudDirty(){
+  if (!cloudOn() || !cloudReady) return;
+  setCloudMeta({editAt: Date.now(), dirty: true});
+  clearTimeout(cloudTimer); cloudTimer = setTimeout(() => cloudPush(false), 1500);
+  setSave("Saving…");
+}
+async function cloudPush(force){
+  if (!cloudOn()) return;
+  if (cloudBusy){ cloudAgain = true; return; }
+  cloudBusy = true;
+  const m = cloudMeta();
+  try {
+    const r = await api("data?op=state", {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({data: state, baseRev: m.rev || 0, at: m.editAt || Date.now(), force: !!force})});
+    if (r.status === 409){
+      const c = await r.json().catch(() => ({}));
+      cloudBusy = false;
+      if ((m.editAt || 0) > (c.at || 0)) return cloudPush(true);
+      return cloudPull(true);
+    }
+    if (!r.ok) throw new Error("http");
+    const j = await r.json();
+    setCloudMeta({rev: j.rev, dirty: false, syncedAt: Date.now()});
+    setSave("Saved to your account");
+  } catch(e){ setSave(navigator.onLine === false ? "Offline. Saved on this device" : "Couldn't save online. Saved on this device"); }
+  cloudBusy = false;
+  if (cloudAgain){ cloudAgain = false; cloudPush(false); }
+  renderAcct();
+}
+async function cloudPull(forceLoad){
+  if (!cloudOn()) return;
+  lastPull = Date.now();
+  const m = cloudMeta();
+  try {
+    const r = await api("data?op=state" + (m.rev && !forceLoad ? "&since=" + m.rev : ""));
+    if (r.status === 204){ cloudReady = true; if (m.dirty) cloudPush(false); else setSave("Saved to your account"); return; }
+    if (!r.ok) throw new Error("http");
+    const c = await r.json();
+    cloudReady = true;
+    if (!c.rev){ await cloudPush(true); return; }             // brand-new account: this device becomes the account
+    if (m.dirty && (m.editAt || 0) > (c.at || 0) && !forceLoad){ await cloudPush(true); return; }
+    if (c.data && Array.isArray(c.data.assignments)){
+      state = c.data; normalise(); writeLocal();
+      setCloudMeta({rev: c.rev, dirty: false, syncedAt: Date.now()});
+      try { genAutoTasks(); } catch(e){}
+      const od = document.querySelector("dialog[open]");
+      if (!od || od.id === "dlgL") render(); else pendingRender = true;
+    }
+    setSave("Saved to your account");
+  } catch(e){ cloudReady = true; setSave("Couldn't reach your account. Saved on this device"); }
+  renderAcct();
+}
+
+/* files (GoodNotes PDFs and study notes) */
+function fileQueue(id){
+  if (!cloudOn() || !id) return;
+  fileQ.add(id); clearTimeout(fileTimer); fileTimer = setTimeout(filePush, 1200);
+}
+async function uploadFile(rec){
+  const {blob, cs, ...meta} = rec;
+  meta.hasBlob = !!blob; meta.size = blob ? blob.size : (meta.size || 0); meta.mime = blob ? (blob.type || "application/pdf") : "";
+  if (blob && blob.size > 5.5 * 1024 * 1024){ meta.hasBlob = false; meta.tooBig = true; }
+  if (meta.hasBlob){
+    const r = await api("data?op=blob&id=" + encodeURIComponent(rec.id), {method: "PUT", headers: {"Content-Type": "application/octet-stream"}, body: blob});
+    if (!r.ok) throw new Error("blob");
+  }
+  const r2 = await api("data?op=file&id=" + encodeURIComponent(rec.id), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(meta)});
+  if (!r2.ok) throw new Error("file");
+  rec.cs = true; await IDBraw.put(rec);
+}
+async function filePush(){
+  const ids = [...fileQ]; fileQ.clear();
+  for (const id of ids){
+    let rec = null; try { rec = await IDBraw.get(id); } catch(e){}
+    try {
+      if (!rec){ const r = await api("data?op=file&id=" + encodeURIComponent(id), {method: "DELETE"}); if (!r.ok) throw new Error("del"); }
+      else await uploadFile(rec);
+    } catch(e){ fileQ.add(id); }
+  }
+  if (fileQ.size){ clearTimeout(fileTimer); fileTimer = setTimeout(filePush, 30000); }
+}
+async function cloudFilesSync(){
+  if (!cloudOn()) return;
+  let idx;
+  try { const r = await api("data?op=files"); if (!r.ok) return; idx = await r.json(); } catch(e){ return; }
+  let local = []; try { local = (await IDBraw.all()) || []; } catch(e){ return; }
+  const byId = {}; local.forEach(r => byId[r.id] = r);
+  let got = 0;
+  for (const id of Object.keys(idx)){
+    const meta = idx[id], l = byId[id];
+    if (l && (l.u || 0) >= (meta.u || 0)) continue;
+    try {
+      const r = await api("data?op=file&id=" + encodeURIComponent(id)); if (!r.ok) continue;
+      const rec = await r.json();
+      if (meta.hasBlob){
+        const b = await api("data?op=blob&id=" + encodeURIComponent(id)); if (!b.ok) continue;
+        rec.blob = new Blob([await b.arrayBuffer()], {type: meta.mime || "application/pdf"});
+      } else if (l && l.blob) rec.blob = l.blob;
+      delete rec.hasBlob; delete rec.mime; rec.cs = true;
+      await IDBraw.put(rec); got++;
+    } catch(e){}
+  }
+  for (const l of local){
+    if (idx[l.id]) continue;
+    if (l.cs){ try { await IDBraw.del(l.id); got++; } catch(e){} }
+    else fileQ.add(l.id);
+  }
+  if (fileQ.size) filePush();
+  if (got && typeof dS !== "undefined" && dS.open) renderStudy();
+}
+
+/* account dialog */
+const dL = $("#dlgL");
+let lMode = "login";
+function renderAcct(){
+  const a = auth();
+  $("#lOut").hidden = !!a; $("#lIn").hidden = !a;
+  if (a){
+    $("#lName").textContent = a.name;
+    const m = cloudMeta();
+    $("#lSync").textContent = m.dirty ? "Changes waiting to save…" : m.syncedAt ? "Everything saved to your account. Last synced " + fmtTime.format(new Date(m.syncedAt)) + "." : "Syncing…";
+  }
+  dL.querySelectorAll("[data-lmode]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lmode === lMode)));
+  $("#lPass2Row").hidden = lMode !== "signup"; $("#lSignNote").hidden = lMode !== "signup";
+  $("#lGo").textContent = lMode === "signup" ? "Create account" : "Log in";
+  $("#lPass").autocomplete = lMode === "signup" ? "new-password" : "current-password";
+}
+function openAcct(){ $("#lErr").hidden = true; renderAcct(); dL.showModal(); }
+if (!window.claude){
+  $("#saveState").addEventListener("click", openAcct);
+  if (!auth()) setSave("On this device only · Log in");
+}
+$("#btnCloseL").addEventListener("click", () => dL.close());
+document.addEventListener("close", e => { if (pendingRender && e.target && e.target.tagName === "DIALOG"){ pendingRender = false; render(); } }, true);
+dL.querySelectorAll("[data-lmode]").forEach(b => b.addEventListener("click", () => { lMode = b.dataset.lmode; $("#lErr").hidden = true; renderAcct(); }));
+$("#lSkip").addEventListener("click", () => { try { localStorage.setItem(SKIP_KEY, String(Date.now() + 864e5)); } catch(e){} dL.close(); });
+$("#lForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = t => { const el = $("#lErr"); el.textContent = t; el.hidden = !t; };
+  const username = $("#lUser").value.trim(), password = $("#lPass").value;
+  if (window.claude){ err("Accounts work on your hosted Dead-Lines site. Here, your data is already saved to your Claude account."); return; }
+  if (!username || !password){ err("Enter a username and password."); return; }
+  if (lMode === "signup" && password !== $("#lPass2").value){ err("The two passwords don't match."); return; }
+  const btn = $("#lGo"); btn.disabled = true; err("");
+  try {
+    const r = await fetch("/.netlify/functions/account", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: lMode, username, password})});
+    let j = {}; try { j = await r.json(); } catch(x){}
+    if (r.status === 404) throw new Error("Accounts aren't switched on yet. George needs to upload the latest dead-lines-site.zip to GitHub so Netlify can set them up.");
+    if (!r.ok || !j.token) throw new Error(j.error || "Couldn't log in. Try again.");
+    try { localStorage.setItem(LS_KEY + ".beforeLogin", JSON.stringify(state)); } catch(x){}
+    localStorage.setItem(AUTH_KEY, JSON.stringify({token: j.token, name: j.name}));
+    try { localStorage.removeItem(SKIP_KEY); } catch(x){}
+    setCloudMeta({rev: 0, dirty: false, editAt: 0});
+    $("#lPass").value = ""; $("#lPass2").value = "";
+    setSave("Syncing…");
+    await cloudPull(true);
+    cloudFilesSync();
+    renderAcct();
+    setTimeout(() => dL.close(), 900);
+  } catch(x){ err(x.message || "Couldn't reach the site. Check your internet."); }
+  btn.disabled = false;
+});
+$("#lLogout").addEventListener("click", async () => {
+  try { await api("account", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({action: "logout"})}); } catch(e){}
+  try { localStorage.removeItem(AUTH_KEY); localStorage.removeItem(CLOUD_KEY); } catch(e){}
+  setSave("On this device only · Log in"); renderAcct();
+});
+$("#lSyncNow").addEventListener("click", async () => { $("#lSync").textContent = "Syncing…"; await cloudPull(false); await cloudFilesSync(); renderAcct(); });
+try { if (!window.claude && navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(e){}
+if (cloudOn()){
+  setSave("Syncing…");
+  cloudPull(false).then(() => cloudFilesSync());
+} else if (!window.claude){
+  (async () => {
+    if (await cloudRestore()){ setSave("Syncing…"); renderAcct(); await cloudPull(false); cloudFilesSync(); return; }
+    let snoozed = false; try { snoozed = +(localStorage.getItem(SKIP_KEY) || 0) > Date.now(); } catch(e){}
+    if (snoozed) return;
+    const used = !state.examples;              // she's already been using Dead-Lines on this device
+    if (used){ lMode = "signup"; $("#lIntro").innerHTML = "<b>Make your Dead-Lines account.</b> Everything you've already added on this device moves into it, so it's saved online and you can open it on your phone and laptop. Already made one? Tap Log in."; }
+    setTimeout(() => { if (!document.querySelector("dialog[open]")) openAcct(); }, 700);
+  })();
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && cloudOn() && Date.now() - lastPull > 30000){ cloudPull(false).then(() => cloudFilesSync()); }
+});
+setInterval(() => { if (document.visibilityState === "visible" && cloudOn() && !cloudBusy) cloudPull(false); }, 120000);
+
 genAutoTasks();
 render();
 checkTrophies(true);
