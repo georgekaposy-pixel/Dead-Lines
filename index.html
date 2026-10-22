@@ -306,6 +306,66 @@ h2,h3,.next-title,.empty b,.dlg h2,.group h2,.panel-head h3{font-family:var(--f-
 .mascot{cursor:pointer}
 .mascot:focus-visible{outline:3px solid var(--pink);outline-offset:4px;border-radius:8px}
 .focus{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center}
+.alarmrow{align-items:center}
+.ftask{font-weight:700;line-height:1.3}
+.nowbar{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr);gap:14px}
+.nowbar .card{padding:12px 14px;text-align:left;color:var(--ink);font:inherit;border:1.5px solid var(--line);box-shadow:4px 5px 0 var(--shadow);cursor:pointer}
+.now-btn{display:grid;gap:2px;background:var(--sun);color:var(--sun-ink)!important;transform:rotate(-.6deg);transition:transform .15s}
+.now-btn:hover{transform:rotate(0) translateY(-2px)}
+.now-q{font-family:var(--f-display);font-size:clamp(22px,3vw,30px);line-height:1.05}
+.now-sub{font-size:13px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.streak-chip{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;align-items:center;background:var(--surface)}
+.streak-chip svg{width:44px;height:50px}
+.streak-chip b,.exam-toggle b{display:block;font-size:17px}
+.streak-chip .sub,.exam-toggle .sub{display:block;font-size:12px;color:var(--ink-2)}
+.exam-toggle{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;background:var(--surface)}
+.switch{position:relative;width:44px;height:24px;display:inline-block}
+.switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.switch i{position:absolute;inset:0;border:1.5px solid var(--line);border-radius:14px;background:var(--surface-2);transition:background .2s}
+.switch i::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:var(--ink);transition:transform .2s}
+.switch input:checked + i{background:var(--accent)}
+.switch input:checked + i::after{transform:translateX(20px);background:var(--accent-ink)}
+.switch input:focus-visible + i{outline:3px solid var(--pink);outline-offset:2px}
+.exam-plan{display:grid;gap:10px}
+.exam-set{align-items:center;gap:10px}
+.exam-set label{display:flex;gap:5px;align-items:center}
+.exam-set select,.exam-set input{padding:3px 6px;font-size:12px}
+.exam-days{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,1fr);gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity}
+.exday{border:1.5px solid var(--line);background:var(--surface-2);padding:10px;display:grid;gap:7px;align-content:start;scroll-snap-align:start}
+.exday.today{background:var(--surface);box-shadow:3px 4px 0 var(--accent)}
+.exday h4{margin:0;font-size:14px;display:flex;justify-content:space-between;gap:6px}
+.exam-badge{background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:12px;padding:3px 7px;text-transform:uppercase;letter-spacing:.04em}
+.exblock{border:1.5px solid var(--line);background:var(--surface);padding:7px 8px;display:grid;gap:4px}
+.exblock.done{opacity:.55}.exblock.done .exwhat{text-decoration:line-through}
+.exblock.past:not(.done){opacity:.7;border-style:dashed}
+.exblock .extime{font-family:var(--f-mono);font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.exblock .exwhat{font-size:13px;font-weight:700;line-height:1.25}
+.exblock .actions{gap:6px}
+.streak-row{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;align-items:center;padding-top:12px;border-top:1.5px dashed var(--soft-line)}
+.streak-row svg{width:70px;height:79px}
+.streak-row b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;line-height:1.1}
+.streak-row .note{display:block}
+.buddy-status{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center}
+.buddy-light{width:14px;height:14px;border-radius:50%;background:var(--soft-line);border:1.5px solid var(--line)}
+.buddy-light.on{background:#F2B33D;box-shadow:0 0 0 4px rgba(242,179,61,.3),0 0 14px #F2B33D;animation:buddyPulse 1.6s ease-in-out infinite}
+@keyframes buddyPulse{50%{box-shadow:0 0 0 7px rgba(242,179,61,.12),0 0 20px #F2B33D}}
+.cheers{display:flex;flex-wrap:wrap;gap:6px}
+.cheers button{font-size:20px;line-height:1;width:40px;height:40px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;box-shadow:2px 2px 0 var(--shadow)}
+.cheers button:active{transform:translate(2px,2px);box-shadow:none}
+.cheer{position:fixed;z-index:2147482000;right:max(16px, env(safe-area-inset-right, 0px));top:max(16px, env(safe-area-inset-top, 0px));width:min(320px, calc(100vw - 32px));background:var(--surface);border:1.5px solid var(--line);box-shadow:5px 6px 0 var(--pink);padding:14px;display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;cursor:pointer;animation:cheerIn .5s cubic-bezier(.2,1.4,.4,1)}
+.cheer .big-emoji{font-size:42px;line-height:1;animation:cheerBob 1s ease-in-out infinite alternate}
+.cheer b{display:block}
+@keyframes cheerIn{from{transform:translateY(-30px) rotate(-4deg);opacity:0}}
+@keyframes cheerBob{to{transform:translateY(-4px) rotate(8deg)}}
+@media (max-width:760px){.nowbar{grid-template-columns:1fr 1fr}.now-btn{grid-column:1 / -1}}
+@media (prefers-reduced-motion: reduce){.buddy-light.on,.cheer,.cheer .big-emoji{animation:none}}
+.alarmrow label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.alarmrow select{padding:4px 6px;font-size:12px}
+.alarmbox{position:fixed;z-index:2147483000;left:50%;top:max(18px, env(safe-area-inset-top, 0px));transform:translateX(-50%) rotate(-1deg);width:min(360px, calc(100vw - 32px));background:var(--ink);color:var(--bg);border:1.5px solid var(--line);box-shadow:5px 6px 0 var(--accent);padding:16px;display:grid;gap:8px;justify-items:center;text-align:center}
+.alarmbox b{font-family:var(--f-display);font-weight:400;font-size:30px;line-height:1;display:inline-block;animation:alarmShake .35s ease-in-out infinite alternate}
+.alarmbox .note,.alarmbox .label{color:inherit;opacity:.85}
+@keyframes alarmShake{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+@media (prefers-reduced-motion: reduce){.alarmbox b{animation:none}}
 .candle{width:64px;height:96px}
 .flame{transform-origin:30px 22px;animation:flicker 1.6s ease-in-out infinite}
 @keyframes flicker{0%,100%{transform:scale(1) rotate(-2deg)}30%{transform:scale(1.08,.95) rotate(3deg)}60%{transform:scale(.94,1.06) rotate(-1deg)}}
@@ -571,6 +631,25 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
     <div class="stat card avg-s taped" data-act="years" title="Open grades"><span class="label">Year average so far</span><span class="big" id="sAvg">–</span><span class="sub" id="sAvgSub">No marks back yet</span></div>
   </section>
 
+  <section class="nowbar" aria-label="Right now">
+    <button type="button" class="now-btn card" id="btnNow"><span class="label">stuck?</span><span class="now-q">What should I do now?</span><span class="now-sub" id="nowHint">Tap and I'll pick for you</span></button>
+    <button type="button" class="streak-chip card" id="streakChip" title="Study streak"><svg viewBox="0 0 80 90" id="streakMini" aria-hidden="true"></svg><span><span class="label">study streak</span><b id="streakChipN">0 days</b><span class="sub" id="streakChipSub"></span></span></button>
+    <label class="exam-toggle card" for="examOn"><span class="switch"><input type="checkbox" id="examOn"><i aria-hidden="true"></i></span><span><span class="label">exam mode</span><b>Revision plan</b><span class="sub" id="examHint">Plans revision around your exams</span></span></label>
+  </section>
+
+  <section class="card exam-plan taped" id="examPlan" aria-label="Revision plan" hidden>
+    <div class="panel-head">
+      <h3>Revision plan <span class="note" id="examCount"></span></h3>
+      <div class="actions exam-set">
+        <label class="note">Blocks a day <select id="exPer"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        <label class="note">From <input type="time" id="exStart"></label>
+        <label class="note">to <input type="time" id="exEnd"></label>
+      </div>
+    </div>
+    <p class="note">50-minute blocks fitted around your classes, kickboxing and calendar. Modules with closer, bigger exams get more time. Tap Start to begin a séance on a block; it ticks itself off when the timer ends.</p>
+    <div class="exam-days" id="examDays"></div>
+  </section>
+
   <section class="card taped aff" aria-label="Daily affirmation">
     <div class="aff-art" id="affArt">
       <span class="aff-label">daily affirmation</span>
@@ -628,8 +707,10 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
           <svg class="candle" id="candle" viewBox="0 0 60 90" aria-hidden="true"></svg>
           <div style="display:grid;gap:8px;min-width:0">
             <div class="ftime" id="fTime" aria-live="polite">25:00</div>
+            <div class="note ftask" id="fTask" hidden></div>
             <div class="actions"><button type="button" class="btn small primary" id="fStart">Start focus</button><button type="button" class="btn small" id="fReset">Reset</button></div>
             <div class="actions"><button type="button" class="btn small tagbtn" data-fm="25" aria-pressed="true">Focus 25</button><button type="button" class="btn small tagbtn" data-fm="50" aria-pressed="false">Deep 50</button><button type="button" class="btn small tagbtn" data-fm="5" aria-pressed="false">Break 5</button></div>
+            <div class="actions alarmrow"><label class="note"><input type="checkbox" id="fAlarm" checked> Alarm</label><select id="fSound" aria-label="Alarm sound"><option value="bell">Church bell</option><option value="spooky">Spooky organ</option><option value="beep">Beep beep</option><option value="soft">Soft chime</option></select><button type="button" class="btn small ghost" id="fTest">Test</button></div>
           </div>
         </div>
         <div class="tarot-row">
@@ -637,6 +718,15 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
           <div id="tarotText"></div>
         </div>
         <div style="padding-top:12px;border-top:1.5px dashed var(--soft-line)"><span class="label" id="trophyLabel">Trophies</span><div class="trophies" id="trophies"></div></div>
+              <div class="streak-row">
+          <svg viewBox="0 0 80 90" id="streakArt" aria-hidden="true"></svg>
+          <div><span class="label">study streak</span><b id="streakTitle">No streak yet</b><span class="note" id="streakSub"></span></div>
+        </div>
+      </div>
+
+      <div class="panel card taped" id="buddyPanel">
+        <div class="panel-head"><h3 id="buddyTitle">Study with George</h3><span class="fstats" id="buddyDot"></span></div>
+        <div id="buddyBody"></div>
       </div>
 
       <div class="panel card taped">
@@ -690,6 +780,27 @@ aside .panel:not(#funPanel){--hl:#16130F;--hl-ink:#F1E8D6}
   </section>
 </div>
 
+
+<div class="cheer" id="cheerToast" role="status" hidden></div>
+
+<dialog id="dlgNow" aria-labelledby="nowTitle">
+  <div class="dlg">
+    <div class="panel-head"><h2 id="nowTitle">Do this now</h2><button type="button" class="btn small" id="btnCloseNow">Close</button></div>
+    <div id="nowBody"></div>
+    <div class="actions" style="margin-top:14px">
+      <button type="button" class="btn primary" id="nowGo">Start a séance on this</button>
+      <button type="button" class="btn" id="nowNext">Something else</button>
+      <button type="button" class="btn ghost" id="nowDone">Already done</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="alarmbox" id="alarmBox" role="alertdialog" aria-labelledby="alarmText" hidden>
+  <span class="label">⏰ alarm</span>
+  <b id="alarmText">Séance over</b>
+  <span class="note" id="alarmSub">Time for a break.</span>
+  <button type="button" class="btn primary" id="alarmStop">Stop alarm</button>
+</div>
 
 <aside class="musicdock" id="dock" aria-label="Music player" hidden>
   <div class="dock-head">
@@ -1067,7 +1178,8 @@ function normalise(){
   if (!Array.isArray(state.clubs)) state.clubs = KICKBOXING.map((k, i) => ({id:"kb" + i, name:"Kickboxing", day:k[0], start:k[1], end:k[2], loc:k[3], level:k[4], on:true}));
   if (!Array.isArray(state.lists) || !state.lists.length) state.lists = [{id:"l-personal", name:"Personal", items:[]}];
   if (!Array.isArray(state.outlook)) state.outlook = [];
-  state.fun = Object.assign({sessions:0, mins:0, days:{}, cards:{}, trophies:{}}, state.fun || {});
+  state.fun = Object.assign({sessions:0, mins:0, days:{}, cards:{}, trophies:{}, bestStreak:0}, state.fun || {});
+  state.exam = Object.assign({on:false, perDay:3, start:"09:00", end:"21:00", done:{}}, state.exam || {});
 }
 
 let ui = { tab:"todo", mod:"", target:60, editing:null, ttWeek:0, src:"moodle", parsed:null, includePast:false, nMod:"", nOpen:"" };
@@ -1174,6 +1286,7 @@ function render(){
   if (!modById(ui.mod)) ui.mod = "";
   mf.value = ui.mod;
   renderSummary(now); renderWeeks(now); renderList(now); renderMods(); renderTT(now); renderConn(); renderAuto(); renderDegree(); renderFun(); renderLists();
+  if (typeof examReady !== "undefined" && examReady){ renderExam(); renderNowHint(); }
 }
 
 function renderSummary(now){
@@ -2547,17 +2660,86 @@ function drawFocus(){
   $("#fStart").textContent = focus.running ? "Pause" : focus.left < total ? "Resume" : focus.mode === 5 ? "Start break" : "Start focus";
   document.querySelectorAll("[data-fm]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.fm === focus.mode)));
   document.title = focus.running ? `${$("#fTime").textContent} · Dead-Lines` : "Dead-Lines";
+  const ft = $("#fTask"); ft.hidden = !focus.task; ft.textContent = focus.task ? "Working on: " + focus.task : "";
 }
+/* alarm: rings until stopped (max 2 minutes), vibrates phones, notifies when the tab is in the background */
+const ALARM_SOUNDS = {
+  bell:   [[392,0,2.6,"sine",.3],[784,0,1.8,"sine",.1],[392,1.2,2.6,"sine",.3],[784,1.2,1.8,"sine",.1]],
+  spooky: [[220,0,1.4,"triangle",.18],[261.6,0,1.4,"triangle",.14],[311.1,0,1.4,"triangle",.14],[207.7,.9,1.6,"triangle",.18],[246.9,.9,1.6,"triangle",.14],[311.1,.9,1.6,"triangle",.14]],
+  beep:   [[880,0,.18,"square",.12],[880,.3,.18,"square",.12],[880,.6,.18,"square",.12],[880,.9,.18,"square",.12]],
+  soft:   [[523.25,0,1.2,"sine",.2],[659.25,.22,1.2,"sine",.2],[783.99,.44,1.2,"sine",.2]]
+};
+function playSound(name){
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.resume) audioCtx.resume();
+    (ALARM_SOUNDS[name] || ALARM_SOUNDS.bell).forEach(([f, at, len, type, vol]) => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t0 = audioCtx.currentTime + at;
+      o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(vol, t0 + .02); g.gain.exponentialRampToValueAtTime(.001, t0 + len);
+      o.connect(g).connect(audioCtx.destination); o.start(t0); o.stop(t0 + len + .05);
+    });
+  } catch(e){}
+}
+function alarmPrefs(){ state.fun.alarm = Object.assign({on: true, sound: "bell"}, state.fun.alarm || {}); return state.fun.alarm; }
+let alarmLoop = null, alarmStopAt = 0, titleLoop = null, wakeLock = null;
+function startAlarm(title, sub){
+  const p = alarmPrefs();
+  if (!p.on){ chime(); return; }
+  stopAlarm(true);
+  $("#alarmText").textContent = title; $("#alarmSub").textContent = sub;
+  $("#alarmBox").hidden = false;
+  alarmStopAt = Date.now() + 120000;
+  const ring = () => {
+    if (Date.now() > alarmStopAt){ stopAlarm(); return; }
+    playSound(p.sound);
+    try { navigator.vibrate && navigator.vibrate([400, 200, 400, 200, 400]); } catch(e){}
+  };
+  ring(); alarmLoop = setInterval(ring, p.sound === "bell" ? 3000 : 2200);
+  let flip = false;
+  titleLoop = setInterval(() => { flip = !flip; document.title = flip ? "⏰ " + title.toUpperCase() : "Dead-Lines"; }, 800);
+  try {
+    if (document.hidden && "Notification" in window && Notification.permission === "granted"){
+      const n = new Notification(title, {body: sub, tag: "deadlines-alarm", requireInteraction: true});
+      n.onclick = () => { window.focus(); stopAlarm(); n.close(); };
+    }
+  } catch(e){}
+  setTimeout(() => $("#alarmStop").focus(), 50);
+}
+function stopAlarm(quiet){
+  clearInterval(alarmLoop); clearInterval(titleLoop); alarmLoop = titleLoop = null;
+  $("#alarmBox").hidden = true; document.title = "Dead-Lines";
+  try { navigator.vibrate && navigator.vibrate(0); } catch(e){}
+}
+async function keepAwake(on){
+  try {
+    if (on && !wakeLock && navigator.wakeLock) { wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => { wakeLock = null; }); }
+    else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch(e){ wakeLock = null; }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && focus.running) keepAwake(true); });
+$("#alarmStop").addEventListener("click", () => stopAlarm());
+document.addEventListener("keydown", e => { if (!$("#alarmBox").hidden && (e.key === "Escape" || e.key === " ")){ e.preventDefault(); stopAlarm(); } });
+function syncAlarmUI(){ const p = alarmPrefs(); $("#fAlarm").checked = p.on; $("#fSound").value = p.sound; $("#fSound").disabled = !p.on; }
+$("#fAlarm").addEventListener("change", e => { alarmPrefs().on = e.target.checked; syncAlarmUI(); scheduleSave(); });
+$("#fSound").addEventListener("change", e => { alarmPrefs().sound = e.target.value; scheduleSave(); playSound(e.target.value); });
+$("#fTest").addEventListener("click", () => { const p = alarmPrefs(); playSound(p.on ? p.sound : "soft"); });
+syncAlarmUI();
+
 function finishFocus(){
-  focus.running = false; chime();
+  focus.running = false; keepAwake(false);
+  if (focus.mode !== 5) startAlarm("Séance over", `${focus.mode} minutes done. Take a break.`);
+  else startAlarm("Break over", "Back to it. Light the candle.");
   if (focus.mode !== 5){
     const f = state.fun, k = dayKey();
     f.sessions++; f.mins += focus.mode; f.days[k] = (f.days[k] || 0) + focus.mode;
-    Object.keys(f.days).sort().slice(0, -60).forEach(d => delete f.days[d]);
+    Object.keys(f.days).sort().slice(0, -400).forEach(d => delete f.days[d]);
+    f.bestStreak = Math.max(f.bestStreak || 0, streakInfo().n);
+    if (focus.blockId){ state.exam.done[focus.blockId] = Date.now(); }
     confetti(innerWidth / 2 - 100, 140, "SÉANCE OVER");
     state.examples = false; scheduleSave(); checkTrophies();
   } else confetti(innerWidth / 2 - 100, 140, "BREAK OVER");
-  focus.left = focus.mode * 60; drawFocus(); renderFun();
+  focus.left = focus.mode * 60; focus.task = ""; focus.blockId = ""; focus.taskMod = ""; drawFocus(); renderFun(); if (typeof renderExam === "function") renderExam(); if (typeof buddyPresence === "function") buddyPresence();
 }
 setInterval(() => {
   if (!focus.running) return;
@@ -2567,11 +2749,16 @@ setInterval(() => {
 }, 500);
 $("#fStart").addEventListener("click", () => {
   try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume && audioCtx.resume(); } catch(e){}
-  if (focus.running){ focus.running = false; }
-  else { focus.end = Date.now() + focus.left * 1000; focus.running = true; }
+  stopAlarm(true);
+  if (focus.running){ focus.running = false; keepAwake(false); setTimeout(() => typeof buddyPresence === "function" && buddyPresence(), 0); }
+  else {
+    focus.end = Date.now() + focus.left * 1000; focus.running = true; keepAwake(true);
+    try { if (alarmPrefs().on && "Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch(e){}
+    setTimeout(() => typeof buddyPresence === "function" && buddyPresence(), 0);
+  }
   drawFocus();
 });
-$("#fReset").addEventListener("click", () => { focus.running = false; focus.left = focus.mode * 60; drawFocus(); });
+$("#fReset").addEventListener("click", () => { focus.running = false; keepAwake(false); stopAlarm(true); focus.left = focus.mode * 60; focus.task = ""; focus.blockId = ""; focus.taskMod = ""; drawFocus(); if (typeof buddyPresence === "function") buddyPresence(); });
 document.querySelectorAll("[data-fm]").forEach(b => b.addEventListener("click", () => { focus.running = false; focus.mode = +b.dataset.fm; focus.left = focus.mode * 60; drawFocus(); }));
 
 const CARDS = [
@@ -2647,6 +2834,8 @@ function checkTrophies(quiet){
   return newly.length;
 }
 function renderFun(){
+  if (typeof syncAlarmUI === "function") syncAlarmUI();
+  if (typeof renderStreak === "function") renderStreak();
   const today = state.fun.days[dayKey()] || 0;
   $("#focusToday").textContent = today ? `${today} min focused today` : `${state.fun.sessions} session${state.fun.sessions === 1 ? "" : "s"} so far`;
   const got = TROPHIES.filter(t => state.fun.trophies[t.id]).length;
@@ -3611,7 +3800,7 @@ document.addEventListener("keydown", e => {
   else if (/^[a-zA-Z]$/.test(e.key)) tlKey(e.key.toLowerCase());
 });
 
-window.__dl = {analyse, ui};
+window.__dl = {analyse, ui, focus, buddyPoll, revisionPlan, nowCandidates};
 /* ---------- accounts: log in and save everything online (hosted site only) ---------- */
 var AUTH_KEY = LS_KEY + ".auth", CLOUD_KEY = LS_KEY + ".cloud", SKIP_KEY = LS_KEY + ".loginSnooze";   // "Not now" only hides the account prompt for a day
 var pendingRender = false, cloudTimer = null, cloudBusy = false, cloudAgain = false, cloudReady = false, fileQ = new Set(), fileTimer = null, lastPull = 0;
@@ -3835,6 +4024,320 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible" && cloudOn() && Date.now() - lastPull > 30000){ cloudPull(false).then(() => cloudFilesSync()); }
 });
 setInterval(() => { if (document.visibilityState === "visible" && cloudOn() && !cloudBusy) cloudPull(false); }, 120000);
+
+var examReady = false;
+/* ---------- study streak: a Burton-ish plant that grows with every day you focus ---------- */
+function streakInfo(){
+  const days = (state.fun && state.fun.days) || {};
+  const today = (days[dayKey()] || 0) > 0;
+  const cur = new Date(); if (!today) cur.setDate(cur.getDate() - 1);
+  let n = 0; while ((days[dayKey(cur)] || 0) > 0){ n++; cur.setDate(cur.getDate() - 1); }
+  return {n, today, best: Math.max((state.fun && state.fun.bestStreak) || 0, n)};
+}
+function plantSVG(n, thirsty){
+  const ink = "var(--ink)", pale = "#F1E8D6", leaf = thirsty ? "#8C8670" : "#6E8F5A";
+  const stage = n >= 30 ? 5 : n >= 14 ? 4 : n >= 7 ? 3 : n >= 3 ? 2 : n >= 1 ? 1 : 0;
+  const pot = `<path d="M24 74 h32 l-4 14 h-24z" fill="#7C1A17" stroke="${ink}" stroke-width="1.6"/><path d="M22 72 h36 v4 h-36z" fill="#5A1210" stroke="${ink}" stroke-width="1.6"/><path d="M33 80 l3 3 M44 79 l2 4" stroke="${pale}" stroke-width="1"/>`;
+  const flower = (x, y, r) => `<g><circle cx="${x}" cy="${y - r}" r="${r}" fill="${pale}" stroke="${ink}" stroke-width="1.2"/><circle cx="${x + r}" cy="${y}" r="${r}" fill="${pale}" stroke="${ink}" stroke-width="1.2"/><circle cx="${x}" cy="${y + r}" r="${r}" fill="${pale}" stroke="${ink}" stroke-width="1.2"/><circle cx="${x - r}" cy="${y}" r="${r}" fill="${pale}" stroke="${ink}" stroke-width="1.2"/><circle cx="${x}" cy="${y}" r="${r * .8}" fill="${ink}"/></g>`;
+  const lf = (x, y, rot) => `<ellipse cx="${x}" cy="${y}" rx="6" ry="2.6" transform="rotate(${rot} ${x} ${y})" fill="${leaf}" stroke="${ink}" stroke-width="1.1"/>`;
+  let art = "";
+  if (stage === 0) art = `<path d="M40 72 C40 62 44 56 52 58 C58 60 58 67 53 68" fill="none" stroke="#8C8670" stroke-width="2.2" stroke-linecap="round"/>${lf(50, 66, 60)}<text x="40" y="44" text-anchor="middle" font-size="9" fill="var(--ink-2)" font-family="var(--f-mono)">zzz</text>`;
+  if (stage >= 1) art += `<path d="M40 72 C40 66 37 62 40 56" fill="none" stroke="${ink}" stroke-width="2.2" stroke-linecap="round"/>${lf(34, 60, -30)}${lf(46, 58, 30)}`;
+  if (stage >= 2) art += `<path d="M40 56 C44 48 35 42 40 34 C43 29 49 31 48 35 C47 38 43 37 44 35" fill="none" stroke="${ink}" stroke-width="2.2" stroke-linecap="round"/>${lf(35, 46, -40)}`;
+  if (stage >= 3) art += `<path d="M40 34 C38 26 44 22 42 16 C41 12 36 12 37 16 C38 18 40 17 39 15" fill="none" stroke="${ink}" stroke-width="2" stroke-linecap="round"/><path d="M41 44 C48 42 54 38 56 32 C57 28 53 26 52 29" fill="none" stroke="${ink}" stroke-width="1.8" stroke-linecap="round"/>${flower(56, 26, 3)}`;
+  if (stage >= 4) art += `<path d="M39 50 C31 46 25 42 23 35 C22 31 26 30 27 33" fill="none" stroke="${ink}" stroke-width="1.8" stroke-linecap="round"/>${flower(22, 31, 2.6)}${flower(37, 12, 2.6)}<path d="M60 48 q3 -4 6 0 q3 -4 6 0 q-3 1 -6 4 q-3 -3 -6 -4z" fill="${ink}"/>`;
+  if (stage >= 5) art = `<circle cx="62" cy="14" r="9" fill="#F2DE9B" stroke="${ink}" stroke-width="1.2"/><circle cx="66" cy="12" r="8" fill="var(--surface)"/>` + art + `<path d="M14 64 q2 -3 4 0 q2 -3 4 0 q-2 1 -4 3 q-2 -2 -4 -3z" fill="${ink}"/>`;
+  return `<g ${thirsty && stage ? 'transform="rotate(7 40 72)" opacity=".8"' : ""}>${art}</g>${pot}`;
+}
+function renderStreak(){
+  const s = streakInfo(), thirsty = s.n > 0 && !s.today;
+  const svg = plantSVG(s.n, thirsty);
+  $("#streakArt").innerHTML = svg; $("#streakMini").innerHTML = svg;
+  const names = ["dead twig", "sprout", "curly sapling", "moonflower", "haunted shrub", "full gothic garden"];
+  const stage = s.n >= 30 ? 5 : s.n >= 14 ? 4 : s.n >= 7 ? 3 : s.n >= 3 ? 2 : s.n >= 1 ? 1 : 0;
+  const next = [1, 3, 7, 14, 30][stage];
+  $("#streakTitle").textContent = s.n ? `${s.n}-day streak` : "No streak yet";
+  $("#streakSub").textContent = (s.n ? `Your plant is a ${names[stage]}. ` : "Finish a séance to plant something. ")
+    + (thirsty ? "Water it today: one séance keeps the streak alive." : next ? `${next - s.n} more day${next - s.n === 1 ? "" : "s"} until it grows.` : "It can't grow any spookier.")
+    + (s.best > s.n ? ` Best: ${s.best} days.` : "");
+  $("#streakChipN").textContent = s.n ? `${s.n} day${s.n === 1 ? "" : "s"}` : "No streak";
+  $("#streakChipSub").textContent = thirsty ? "Séance today to keep it" : s.today ? "Watered today ✓" : "Start one today";
+}
+$("#streakChip").addEventListener("click", () => $("#funPanel").scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "center"}));
+
+/* ---------- exam mode: a revision plan fitted around everything else ---------- */
+const EX_TYPES = /^(exam|class test)$/i;
+const EX_ACTS = ["Flashcards and key terms", "Practice questions", "Rewrite a lecture from memory", "Past paper, timed"];
+function examsAhead(now){
+  return state.assignments.filter(a => EX_TYPES.test(a.type || "") && a.status !== "marked" && effDue(a) > now).sort((x, y) => effDue(x) - effDue(y));
+}
+const atTime = (d, hm) => { const [h, m] = (hm || "09:00").split(":").map(Number); const x = new Date(d); x.setHours(h || 0, m || 0, 0, 0); return x; };
+function busyOn(day){
+  const d0 = new Date(day); d0.setHours(0,0,0,0); const d1 = new Date(d0); d1.setDate(d0.getDate() + 1); const out = [];
+  (state.timetable || []).forEach(ev => { const s = new Date(ev.s), e = new Date(ev.e); if (s < d1 && e > d0) out.push([s, e]); });
+  (state.outlook || []).forEach(ev => { if (ev.ad) return; const s = new Date(ev.s), e = new Date(ev.e); if (s < d1 && e > d0) out.push([s, e]); });
+  const wd = (d0.getDay() + 6) % 7;
+  (state.clubs || []).forEach(c => { if (c.on && c.day === wd) out.push([atTime(d0, c.start), atTime(d0, c.end)]); });
+  return out;
+}
+function revisionPlan(now){
+  const ex = examsAhead(now);
+  if (!ex.length) return {exams: [], days: []};
+  const P = state.exam, per = Math.max(1, Math.min(6, +P.perDay || 3));
+  const today = new Date(now); today.setHours(0,0,0,0);
+  const last = new Date(effDue(ex[ex.length - 1])); last.setHours(0,0,0,0);
+  const nDays = Math.min(28, Math.round((last - today) / 864e5) + 1);
+  const counts = {}, days = [];
+  for (let i = 0; i < nDays; i++){
+    const day = new Date(today); day.setDate(today.getDate() + i);
+    const dayEnd = new Date(day); dayEnd.setDate(day.getDate() + 1);
+    const examsToday = ex.filter(a => { const d = effDue(a); return d >= day && d < dayEnd; });
+    let start = atTime(day, P.start), end = atTime(day, P.end);
+    const busy = busyOn(day).concat(examsToday.map(a => [new Date(effDue(a).getTime() - 60 * 6e4), new Date(effDue(a).getTime() + 3 * 36e5)]));
+    const blocks = [], usedToday = {};
+    for (let t = new Date(start); blocks.length < per && t.getTime() + 50 * 6e4 <= end.getTime(); ){
+      const e = new Date(t.getTime() + 50 * 6e4);
+      const clash = busy.find(([bs, be]) => t < new Date(be.getTime() + 10 * 6e4) && e > new Date(bs.getTime() - 10 * 6e4));
+      if (clash){ t = new Date(Math.max(t.getTime() + 10 * 6e4, clash[1].getTime() + 10 * 6e4)); t.setMinutes(Math.ceil(t.getMinutes() / 10) * 10, 0, 0); continue; }
+      let best = null, bestScore = -1;
+      ex.forEach(a => {
+        const left = (effDue(a) - e) / 864e5; if (left < 0) return;
+        const key = a.moduleId || a.id;
+        const sc = ((+a.weight || 50) / 50) / Math.pow(Math.max(left, .5), .8) * Math.pow(.5, usedToday[key] || 0);
+        if (sc > bestScore){ bestScore = sc; best = a; }
+      });
+      if (!best) break;
+      const key = best.moduleId || best.id;
+      usedToday[key] = (usedToday[key] || 0) + 1;
+      const c = counts[key] = (counts[key] || 0) + 1;
+      const daysLeft = (effDue(best) - e) / 864e5;
+      const act = daysLeft < 3 ? (c % 2 ? "Past paper, timed" : "Flashcards and key terms") : EX_ACTS[(c - 1) % EX_ACTS.length];
+      blocks.push({id: dayKey(day) + "-" + pad(t.getHours()) + pad(t.getMinutes()) + "-" + key, s: new Date(t), e, exam: best, act});
+      t = new Date(e.getTime() + 10 * 6e4);
+    }
+    days.push({day, blocks, examsToday});
+  }
+  return {exams: ex, days};
+}
+function renderExam(){
+  const now = new Date(), P = state.exam;
+  $("#examOn").checked = !!P.on;
+  $("#examPlan").hidden = !P.on;
+  const ex = examsAhead(now);
+  const first = ex[0];
+  $("#examHint").textContent = first ? `First exam ${fmtDay.format(effDue(first))}` + (P.on ? "" : ". Turn on?") : "Add exams to plan revision";
+  if (!P.on) return;
+  $("#exPer").value = String(P.perDay); $("#exStart").value = P.start; $("#exEnd").value = P.end;
+  const plan = revisionPlan(now);
+  if (!plan.exams.length){
+    $("#examCount").textContent = "";
+    $("#examDays").innerHTML = `<div class="empty"><b>No exams yet</b><span>Add each exam as an assignment with the type <b>Exam</b> (or Class test), its date and start time. The plan builds itself.</span><button type="button" class="btn primary" data-exadd>Add an exam</button></div>`;
+    return;
+  }
+  const done = P.done || {};
+  const total = plan.days.reduce((n, d) => n + d.blocks.length, 0), got = plan.days.reduce((n, d) => n + d.blocks.filter(b => done[b.id]).length, 0);
+  $("#examCount").textContent = `· ${plan.exams.length} exam${plan.exams.length === 1 ? "" : "s"} · ${got}/${total} blocks done`;
+  $("#examDays").innerHTML = plan.days.map(d => {
+    const isToday = dayKey(d.day) === dayKey(now);
+    return `<div class="exday${isToday ? " today" : ""}">
+      <h4><span>${isToday ? "Today" : esc(fmtDay.format(d.day))}</span></h4>
+      ${d.examsToday.map(a => `<span class="exam-badge">Exam ${esc(fmtTime.format(effDue(a)))} · ${esc((modById(a.moduleId) || {}).code || a.title)}</span>`).join("")}
+      ${d.blocks.map(b => { const m = modById(b.exam.moduleId), past = b.e < now, isDone = !!done[b.id];
+        return `<div class="exblock${isDone ? " done" : ""}${past ? " past" : ""}">
+          <span class="extime"><span>${esc(fmtTime.format(b.s))}–${esc(fmtTime.format(b.e))}</span>${codeChip(m)}</span>
+          <span class="exwhat">${esc(b.act)}</span>
+          <span class="note">for ${esc(m ? m.name : b.exam.title)}</span>
+          <span class="actions">${isDone ? `<button type="button" class="btn small ghost" data-exundo="${esc(b.id)}">Undo</button>` : `<button type="button" class="btn small primary" data-exgo="${esc(b.id)}">Start</button><button type="button" class="btn small ghost" data-exdone="${esc(b.id)}">Done</button>`}</span>
+        </div>`; }).join("") || `<span class="note">${d.examsToday.length ? "Exam day. Rest, eat, go smash it." : "Fully booked. Rest day."}</span>`}
+    </div>`; }).join("");
+  ui.examPlan = plan;
+}
+function findBlock(id){ const p = ui.examPlan || revisionPlan(new Date()); for (const d of p.days) for (const b of d.blocks) if (b.id === id) return b; return null; }
+function startSeance(task, mins, extra){
+  stopAlarm(true);
+  focus.mode = mins >= 50 ? 50 : mins <= 5 ? 5 : 25; focus.left = focus.mode * 60;
+  focus.task = task; focus.blockId = (extra && extra.blockId) || ""; focus.taskMod = (extra && extra.mod) || "";
+  try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume && audioCtx.resume(); } catch(e){}
+  focus.end = Date.now() + focus.left * 1000; focus.running = true; keepAwake(true);
+  try { if (alarmPrefs().on && "Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch(e){}
+  drawFocus(); buddyPresence();
+  $("#funPanel").scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "center"});
+}
+$("#examOn").addEventListener("change", e => { state.exam.on = e.target.checked; commit(); if (e.target.checked) setTimeout(() => $("#examPlan").scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "start"}), 50); });
+$("#exPer").addEventListener("change", e => { state.exam.perDay = +e.target.value; commit(); });
+$("#exStart").addEventListener("change", e => { if (e.target.value){ state.exam.start = e.target.value; commit(); } });
+$("#exEnd").addEventListener("change", e => { if (e.target.value){ state.exam.end = e.target.value; commit(); } });
+$("#examDays").addEventListener("click", e => {
+  if (e.target.closest("[data-exadd]")){ openA(); $("#fType").value = "Exam"; $("#fTime").value = "09:30"; return; }
+  const go = e.target.closest("[data-exgo]"), dn = e.target.closest("[data-exdone]"), un = e.target.closest("[data-exundo]");
+  if (go){ const b = findBlock(go.dataset.exgo); if (b){ const m = modById(b.exam.moduleId); startSeance(`${m ? m.code : b.exam.title}: ${b.act}`, 50, {blockId: b.id, mod: m ? m.code : ""}); } return; }
+  if (dn){ state.exam.done[dn.dataset.exdone] = Date.now(); commit(); return; }
+  if (un){ delete state.exam.done[un.dataset.exundo]; commit(); }
+});
+
+/* ---------- "What should I do now?" ---------- */
+function nowCandidates(){
+  const now = new Date(), out = [], hr = now.getHours();
+  if (hr >= 23 || hr < 5) out.push({kind: "sleep", score: 5000, title: "Go to sleep", why: `It's ${fmtTime.format(now)}. Sleep is when your brain saves today's revision. Everything will still be here tomorrow.`, mins: 0});
+  // a class starting soon
+  const nextClass = (state.timetable || []).map(ev => ({ev, s: new Date(ev.s)})).filter(x => x.s > now && x.s - now < 25 * 6e4).sort((a, b) => a.s - b.s)[0];
+  if (nextClass) out.push({kind: "class", score: 3000, title: `Get ready for ${nextClass.ev.t || "your class"}`, why: `It starts ${fmtTime.format(nextClass.s)}${nextClass.ev.l ? " in " + nextClass.ev.l : ""}. Not worth starting something big.`, mins: 0});
+  // free time before the next thing
+  const nextBusy = (state.timetable || []).map(ev => new Date(ev.s)).filter(s => s > now).sort((a, b) => a - b)[0];
+  const freeMins = nextBusy ? (nextBusy - now) / 6e4 : 999;
+  const len = w => freeMins < 40 ? 25 : (w ? 50 : 25);
+  // exam revision block
+  if (state.exam.on){
+    const plan = revisionPlan(now), done = state.exam.done || {};
+    const todayBlocks = (plan.days[0] && dayKey(plan.days[0].day) === dayKey(now) ? plan.days[0].blocks : []).filter(b => !done[b.id] && b.e > now);
+    const b = todayBlocks[0];
+    if (b){ const m = modById(b.exam.moduleId); out.push({kind: "rev", score: 900, title: `Revise ${m ? m.code : b.exam.title}: ${b.act}`, why: `From your revision plan (${fmtTime.format(b.s)}). Exam on ${fmtDay.format(effDue(b.exam))}.`, mins: 50, blockId: b.id, mod: m ? m.code : ""}); }
+  }
+  state.assignments.filter(isOpen).forEach(a => {
+    if (EX_TYPES.test(a.type || "") && state.exam.on) return;
+    const d = effDue(a), h = (d - now) / 36e5; if (h > 24 * 28) return;
+    const w = +a.weight || 10, m = modById(a.moduleId);
+    const score = h < 0 ? 600 + w : ((w + 10) / Math.max(h, 1)) * (a.status === "todo" ? 1.3 : 1) * (EX_TYPES.test(a.type || "") ? .6 : 1);
+    const bits = [h < 0 ? until(d) + ": check if you have an extension" : until(d)];
+    if (a.weight) bits.push(`worth ${a.weight}%`);
+    bits.push(a.status === "todo" ? "not started yet" : "already in progress");
+    out.push({kind: "a", id: a.id, score, title: a.title, mod: m ? m.code : "", why: bits.join(", ") + ".", mins: len(h < 48 || w >= 25)});
+  });
+  (state.lists || []).forEach(l => l.items.forEach(it => {
+    if (it.done) return;
+    const h = it.due ? (new Date(it.due + "T23:59") - now) / 36e5 : 24 * 10;
+    out.push({kind: "l", listId: l.id, itemId: it.id, score: 2 / Math.max(h, 1) + .01, title: it.text, why: `On your ${l.name} list${it.due ? ". " + until(new Date(it.due + "T23:59")) : ""}.`, mins: 25});
+  }));
+  out.push({kind: "cards", score: .005, title: "Do this week's flashcards", why: "Nothing's urgent. A quick flashcard round keeps your lectures fresh.", mins: 25});
+  return out.sort((a, b) => b.score - a.score);
+}
+function renderNowHint(){
+  const c = nowCandidates()[0];
+  $("#nowHint").textContent = c ? "Next up: " + c.title : "Tap and I'll pick for you";
+}
+const dNow = $("#dlgNow"); let nowList = [], nowIdx = 0;
+function showNow(){
+  const c = nowList[nowIdx % nowList.length];
+  $("#nowBody").innerHTML = `<p class="label">${nowIdx === 0 ? "my pick" : "option " + (nowIdx % nowList.length + 1)}</p>
+    <p class="now-q" style="margin:4px 0 8px">${esc(c.title)}</p>
+    <p>${c.mod ? `<span class="code">${esc(c.mod)}</span> ` : ""}${esc(c.why)}</p>
+    ${c.mins ? `<p class="note">Suggested: a ${c.mins}-minute séance.</p>` : ""}`;
+  $("#nowGo").textContent = c.kind === "cards" ? "Open flashcards" : c.kind === "sleep" ? "Goodnight" : c.kind === "class" ? "On my way" : `Start a ${c.mins}-min séance`;
+  $("#nowDone").hidden = !(c.kind === "a" || c.kind === "l" || c.kind === "rev");
+  $("#nowNext").hidden = nowList.length < 2;
+}
+$("#btnNow").addEventListener("click", () => { nowList = nowCandidates(); nowIdx = 0; showNow(); dNow.showModal(); });
+$("#btnCloseNow").addEventListener("click", () => dNow.close());
+$("#nowNext").addEventListener("click", () => { nowIdx++; showNow(); });
+$("#nowGo").addEventListener("click", () => {
+  const c = nowList[nowIdx % nowList.length]; dNow.close();
+  if (c.kind === "cards"){ openStudy("cards"); return; }
+  if (c.kind === "sleep" || c.kind === "class") return;
+  if (c.kind === "a"){ const a = state.assignments.find(x => x.id === c.id); if (a && a.status === "todo"){ a.status = "progress"; commit(); } }
+  startSeance(c.title, c.mins, {blockId: c.blockId, mod: c.mod});
+});
+$("#nowDone").addEventListener("click", () => {
+  const c = nowList[nowIdx % nowList.length];
+  if (c.kind === "a"){ const a = state.assignments.find(x => x.id === c.id); if (a){ a.status = "submitted"; a.doneAt = Date.now(); } }
+  if (c.kind === "l"){ const l = state.lists.find(x => x.id === c.listId), it = l && l.items.find(x => x.id === c.itemId); if (it) it.done = true; }
+  if (c.kind === "rev") state.exam.done[c.blockId] = Date.now();
+  commit(); confetti(innerWidth / 2 - 80, 160, "DONE");
+  nowList = nowCandidates(); nowIdx = 0; showNow();
+});
+
+/* ---------- study with George: see each other studying, send cheers ---------- */
+var buddyState = null, buddyTimer = null, buddyLastPresence = 0, cheerQueue = [];
+const CHEER_EMOJI = ["🕯️", "💪", "❤️", "☕", "🦇", "⭐", "🔥", "😘"];
+const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+async function buddyCall(body){
+  const r = await api("buddy", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+  let j = {}; try { j = await r.json(); } catch(e){}
+  if (r.status === 404 && !j.error) throw new Error("Upload the new buddy.mjs file to GitHub to switch this on.");
+  if (!r.ok) throw new Error(j.error || "Couldn't reach the site.");
+  return j;
+}
+function buddyPresence(){
+  if (!cloudOn()) return;
+  buddyLastPresence = Date.now();
+  const s = streakInfo();
+  buddyCall({action: "presence", studying: focus.running && focus.mode !== 5, until: focus.running ? focus.end : 0, mode: focus.mode, what: focus.running && focus.mode !== 5 ? (focus.taskMod || "") : "", today: state.fun.days[dayKey()] || 0, streak: s.n}).catch(() => {});
+}
+async function buddyPoll(){
+  if (!cloudOn()){ buddyState = null; renderBuddy(); return; }
+  if (Date.now() - buddyLastPresence > 5 * 6e4) buddyPresence();
+  try { buddyState = await buddyCall({action: "status"}); buddyState.err = ""; }
+  catch(e){ buddyState = Object.assign(buddyState || {}, {err: e.message}); }
+  (buddyState.inbox || []).forEach(m => cheerQueue.push(m));
+  if (cheerQueue.length && $("#cheerToast").hidden) nextCheer();
+  renderBuddy();
+}
+function nextCheer(){
+  const m = cheerQueue.shift(); if (!m) return;
+  const t = $("#cheerToast");
+  t.innerHTML = `<span class="big-emoji" aria-hidden="true">${esc(m.emoji)}</span><span><b>${esc(cap(m.from))} sent you ${esc(m.emoji)}</b>${m.text ? `<span>${esc(m.text)}</span>` : `<span class="note">${esc(fmtTime.format(new Date(m.at)))}</span>`}</span>`;
+  t.hidden = false; playSound("soft");
+  clearTimeout(t._h); t._h = setTimeout(() => { t.hidden = true; nextCheer(); }, 9000);
+}
+$("#cheerToast").addEventListener("click", () => { const t = $("#cheerToast"); clearTimeout(t._h); t.hidden = true; nextCheer(); });
+function renderBuddy(){
+  const body = $("#buddyBody"), title = $("#buddyTitle"), dot = $("#buddyDot");
+  const b = buddyState, name = b && b.buddy ? cap(b.buddy) : "George";
+  title.textContent = "Study with " + name; dot.textContent = "";
+  if (window.claude){ body.innerHTML = `<p class="note">Works on your hosted Dead-Lines site, once you're logged in.</p>`; return; }
+  if (!auth()){ body.innerHTML = `<p class="note">Log in, and ${esc(name)} can see when you're studying and send you encouragement (and you can send some back).</p><button type="button" class="btn small primary" data-bd="login">Log in</button>`; return; }
+  if (!b){ body.innerHTML = `<p class="note">Connecting…</p>`; return; }
+  if (b.err && !b.me){ body.innerHTML = `<p class="err">${esc(b.err)}</p>`; return; }
+  if (!b.buddy || ui.buddyEdit){
+    body.innerHTML = `<p class="note">Type your study buddy's Dead-Lines username. They add yours (<b>${esc(b.me || "")}</b>) too, then you can see each other studying.</p>
+      <form class="urlrow" id="bdForm" autocomplete="off"><input type="text" id="bdName" placeholder="their username" autocapitalize="none" spellcheck="false" value="${esc(b.buddy || "")}" aria-label="Study buddy's username"><button type="submit" class="btn small primary">Save</button></form>${b.err ? `<p class="err">${esc(b.err)}</p>` : ""}`;
+    return;
+  }
+  if (!b.mutual){
+    body.innerHTML = `<p class="note">Waiting for <b>${esc(name)}</b> to add you back. Your username is <b>${esc(b.me)}</b>.</p><button type="button" class="btn small ghost" data-bd="edit">Change buddy</button>`;
+    return;
+  }
+  const p = b.presence || {}, on = !!p.studying;
+  const left = on && p.until ? Math.max(1, Math.round((p.until - Date.now()) / 6e4)) : 0;
+  const seen = p.at ? Math.round((Date.now() - p.at) / 6e4) : null;
+  const line = on ? `<b>${esc(name)} is in a séance</b><span class="note">${left} min left${p.what ? " · " + esc(p.what) : ""}</span>`
+    : `<b>${esc(name)} isn't studying right now</b><span class="note">${seen == null ? "Not seen yet" : seen < 2 ? "Here a moment ago" : seen < 60 ? `Seen ${seen} min ago` : seen < 1440 ? `Seen ${Math.round(seen / 60)} hr ago` : "Seen a while ago"}</span>`;
+  dot.textContent = on ? "studying" : "";
+  body.innerHTML = `<div class="buddy-status"><span class="buddy-light${on ? " on" : ""}" aria-hidden="true"></span><span style="display:grid">${line}</span></div>
+    <p class="note" style="margin:8px 0">${esc(name)} today: ${p.today || 0} min focused${p.streak ? ` · ${p.streak}-day streak` : ""}</p>
+    <span class="label">send ${esc(name)} some encouragement</span>
+    <input type="text" id="bdMsg" maxlength="120" placeholder="Add a message (optional)" aria-label="Message" style="width:100%;margin:6px 0">
+    <div class="cheers">${CHEER_EMOJI.map(e => `<button type="button" data-cheer="${e}" aria-label="Send ${e}">${e}</button>`).join("")}</div>
+    <p class="ok-msg" id="bdSent" hidden></p>
+    <button type="button" class="btn small ghost" data-bd="edit" style="margin-top:8px">Change buddy</button>`;
+}
+$("#buddyBody").addEventListener("click", async e => {
+  const act = e.target.closest("[data-bd]");
+  if (act){ if (act.dataset.bd === "login") openAcct(); else { ui.buddyEdit = true; renderBuddy(); } return; }
+  const ch = e.target.closest("[data-cheer]"); if (!ch) return;
+  const msg = $("#bdMsg") ? $("#bdMsg").value : "";
+  ch.disabled = true;
+  try {
+    await buddyCall({action: "cheer", emoji: ch.dataset.cheer, text: msg});
+    const ok = $("#bdSent"); ok.textContent = `Sent ${ch.dataset.cheer}${msg ? " with your message" : ""}!`; ok.hidden = false;
+    if ($("#bdMsg")) $("#bdMsg").value = "";
+    bats(4, e.clientX, e.clientY);
+  } catch(x){ const ok = $("#bdSent"); ok.textContent = x.message; ok.hidden = false; }
+  ch.disabled = false;
+});
+$("#buddyBody").addEventListener("submit", async e => {
+  if (e.target.id !== "bdForm") return; e.preventDefault();
+  try { await buddyCall({action: "set", buddy: $("#bdName").value.trim()}); ui.buddyEdit = false; await buddyPoll(); }
+  catch(x){ buddyState = Object.assign(buddyState || {}, {err: x.message}); renderBuddy(); }
+});
+function buddyLoop(){
+  clearTimeout(buddyTimer);
+  const fast = focus.running || (buddyState && buddyState.presence && buddyState.presence.studying);
+  buddyTimer = setTimeout(async () => { if (document.visibilityState === "visible") await buddyPoll(); buddyLoop(); }, fast ? 20000 : 45000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && cloudOn()) buddyPoll(); });
+examReady = true;
+renderBuddy(); setTimeout(() => { buddyPoll(); buddyLoop(); }, 1500);
+setInterval(() => { if (document.visibilityState === "visible"){ renderNowHint(); if (state.exam.on) renderExam(); } }, 5 * 6e4);
 
 genAutoTasks();
 render();
